@@ -1,0 +1,119 @@
+// /public/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PWA Toko Kue</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="root"></div>
+  <script src="/src/index.js" type="module"></script>
+</body>
+</html>
+
+// /public/manifest.json
+{
+  "name": "Toko Kue",
+  "short_name": "Kue",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#fff5e1",
+  "theme_color": "#ff8c42",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+
+// /public/service-worker.js
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open('toko-kue-cache').then((cache) => {
+      return cache.addAll([
+        '/',
+        '/index.html',
+        '/styles.css',
+        '/src/index.js'
+      ]);
+    })
+  );
+});
+
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
+});
+
+// /src/index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+ReactDOM.render(<App />, document.getElementById('root'));
+
+// /src/App.js
+import React from 'react';
+
+function App() {
+  return (
+    <div>
+      <h1>Selamat Datang di Toko Kue Dea</h1>
+      <p>Nikmati berbagai pilihan kue lezat kami!</p>
+      <ul>
+        <li>Kue Cokelat</li>
+        <li>Kue Keju</li>
+        <li>Kue Red Velvet</li>
+        <li>Kue Tart</li>
+        <li>Kue Lapis</li>
+        <li>Brownies</li>
+        <li>Kue Lumpur</li>
+        <li>Kue Sus</li>
+        <li>Donat</li>
+        <li>Kue Ulang Tahun</li>
+        <li>Kue Nastar</li>
+        <li>Kue Putri Salju</li>
+        <li>Kue Kastengel</li>
+        <li>Macaron</li>
+        <li>Kue Brown Butter</li>
+        <li>Kue Pandan</li>
+        <li>Kue Kukus</li>
+        <li>Kue Bolu</li>
+        <li>Kue Cupcake</li>
+        <li>Kue Cubit</li>
+        <li>Kue Lumpur Kentang</li>
+        <li>Kue Roti Maryam</li>
+        <li>Kue Donat Kentang</li>
+        <li>Kue Brownie Cookies</li>
+        <li>Kue Opera</li>
+        <li>Kue Zebra</li>
+        <li>Kue Mille Crepes</li>
+        <li>Kue Charlotte</li>
+        <li>Kue Tiramisu</li>
+      </ul>
+      <div>
+        <h2>Promo Spesial</h2>
+        <p>Diskon hingga 50% untuk pembelian kue tertentu. Jangan lewatkan kesempatan ini!</p>
+      </div>
+      <div>
+        <h2>Pesan Sekarang</h2>
+        <p>Hubungi kami di <a href="tel:+6281399730424">0813-9973-0424</a> atau kunjungi gerai kami untuk mencicipi kue lezat langsung di tempat.</p>
+      </div>
+    </div>
+  );
+}
+
+export default App;
